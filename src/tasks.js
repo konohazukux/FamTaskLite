@@ -5,6 +5,7 @@ export const USERS = [
 
 export const TASKS = [
   { id: 'miku-chopsticks', userId: 'miku', title: 'お箸セット', emoji: '🥢' },
+  { id: 'miku-bottle', userId: 'miku', title: '水筒を出す', emoji: '🧴' },
   { id: 'miku-blouse', userId: 'miku', title: 'ブラウスを出す', emoji: '👚' },
   {
     id: 'miku-schoolbag',
