@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { getTodayKey, readCheckedTaskIds, writeCheckedTaskIds } from './checkStorage.js'
+import { COMPLETED_MOVE_DELAY_MS, orderTasks } from './taskOrder.js'
 import { TASKS, USERS } from './tasks.js'
 
 const weekdayFormatter = new Intl.DateTimeFormat('ja-JP', {
@@ -8,8 +9,9 @@ const weekdayFormatter = new Intl.DateTimeFormat('ja-JP', {
   weekday: 'short',
 })
 
-function TaskColumn({ user, tasks, checkedIds, onToggle }) {
+function TaskColumn({ user, tasks, checkedIds, movedTaskIds, onToggle }) {
   const completedCount = tasks.filter((task) => checkedIds.has(task.id)).length
+  const displayedTasks = orderTasks(tasks, movedTaskIds)
 
   return (
     <section className={`task-column task-column--${user.tone}`} aria-labelledby={`${user.id}-title`}>
@@ -25,7 +27,7 @@ function TaskColumn({ user, tasks, checkedIds, onToggle }) {
       </div>
 
       <div className="task-list">
-        {tasks.map((task) => {
+        {displayedTasks.map((task) => {
           const isChecked = checkedIds.has(task.id)
 
           return (
@@ -51,20 +53,68 @@ function App() {
   const [today] = useState(() => new Date())
   const [todayKey] = useState(() => getTodayKey(today))
   const [checkedIds, setCheckedIds] = useState(() => new Set(readCheckedTaskIds(localStorage, todayKey)))
+  const [movedTaskIds, setMovedTaskIds] = useState(() => new Set())
+  const moveTimers = useRef(new Map())
 
   const tasksByUser = useMemo(
     () => Object.fromEntries(USERS.map((user) => [user.id, TASKS.filter((task) => task.userId === user.id)])),
     [],
   )
 
+  useEffect(() => {
+    for (const [taskId, timerId] of moveTimers.current) {
+      if (!checkedIds.has(taskId) || movedTaskIds.has(taskId)) {
+        window.clearTimeout(timerId)
+        moveTimers.current.delete(taskId)
+      }
+    }
+
+    for (const taskId of checkedIds) {
+      if (movedTaskIds.has(taskId) || moveTimers.current.has(taskId)) {
+        continue
+      }
+
+      const timerId = window.setTimeout(() => {
+        moveTimers.current.delete(taskId)
+        setMovedTaskIds((currentIds) => new Set(currentIds).add(taskId))
+      }, COMPLETED_MOVE_DELAY_MS)
+
+      moveTimers.current.set(taskId, timerId)
+    }
+  }, [checkedIds, movedTaskIds])
+
+  useEffect(() => {
+    const timers = moveTimers.current
+
+    return () => {
+      for (const timerId of timers.values()) {
+        window.clearTimeout(timerId)
+      }
+      timers.clear()
+    }
+  }, [])
+
   function toggleTask(taskId) {
+    const willBeChecked = !checkedIds.has(taskId)
+
+    if (!willBeChecked) {
+      const timerId = moveTimers.current.get(taskId)
+      window.clearTimeout(timerId)
+      moveTimers.current.delete(taskId)
+      setMovedTaskIds((currentIds) => {
+        const nextIds = new Set(currentIds)
+        nextIds.delete(taskId)
+        return nextIds
+      })
+    }
+
     setCheckedIds((currentIds) => {
       const nextIds = new Set(currentIds)
 
-      if (nextIds.has(taskId)) {
-        nextIds.delete(taskId)
-      } else {
+      if (willBeChecked) {
         nextIds.add(taskId)
+      } else {
+        nextIds.delete(taskId)
       }
 
       writeCheckedTaskIds(localStorage, todayKey, [...nextIds])
@@ -89,6 +139,7 @@ function App() {
             user={user}
             tasks={tasksByUser[user.id]}
             checkedIds={checkedIds}
+            movedTaskIds={movedTaskIds}
             onToggle={toggleTask}
           />
         ))}
