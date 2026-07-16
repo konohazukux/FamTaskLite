@@ -1,4 +1,4 @@
-export const COMPLETED_MOVE_DELAY_MS = 10_000
+export const COMPLETED_MOVE_DELAY_MS = 5_000
 
 export function orderTasks(tasks, movedTaskIds) {
   const originalPositions = new Map(tasks.map((task, index) => [task.id, index]))
