@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap');
+
+:root {
+  font-family: 'M PLUS Rounded 1c', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #3c3530;
+  background: #fff8ee;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 210, 190, 0.34), transparent 26rem),
+    radial-gradient(circle at 92% 92%, rgba(181, 224, 204, 0.4), transparent 28rem),
+    #fff8ee;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  padding: max(20px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left));
+  gap: 18px;
+}
+
+.app-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 4px;
+}
+
+.eyebrow {
+  margin: 0 0 2px;
+  color: #a27559;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+h1 span {
+  color: #e87d65;
+}
+
+.app-header time {
+  flex: 0 0 auto;
+  padding: 10px 17px;
+  border: 1px solid rgba(95, 72, 56, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 6px 24px rgba(91, 63, 43, 0.07);
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  min-height: 0;
+}
+
+.task-column {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  padding: clamp(14px, 2vw, 24px);
+  border: 1px solid rgba(90, 65, 48, 0.08);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(88, 60, 41, 0.09);
+  overflow: hidden;
+}
+
+.task-column--peach {
+  background: linear-gradient(150deg, rgba(255, 237, 226, 0.96), rgba(255, 248, 242, 0.9));
+}
+
+.task-column--mint {
+  background: linear-gradient(150deg, rgba(229, 245, 237, 0.96), rgba(247, 252, 248, 0.9));
+}
+
+.column-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px 15px;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.person-emoji {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 1.55rem;
+  box-shadow: 0 5px 15px rgba(88, 60, 41, 0.06);
+}
+
+h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+  line-height: 1;
+}
+
+.progress {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  color: #75685f;
+  font-size: 1rem;
+}
+
+.progress strong {
+  color: #3c3530;
+  font-size: clamp(1.45rem, 2.7vw, 2rem);
+  line-height: 1;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-height: 0;
+  padding: 2px 5px 8px 2px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(96, 77, 64, 0.22) transparent;
+  scrollbar-width: thin;
+}
+
+.task-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(12px, 1.8vw, 18px);
+  width: 100%;
+  min-height: 74px;
+  padding: 12px clamp(13px, 2vw, 20px);
+  border: 2px solid transparent;
+  border-radius: 20px;
+  color: #3d3530;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 7px 20px rgba(86, 60, 42, 0.07);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 150ms ease, transform 120ms ease, background 150ms ease;
+}
+
+.task-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(226, 127, 101, 0.22);
+}
+
+.task-card:active {
+  transform: scale(0.985);
+}
+
+.task-card:focus-visible {
+  outline: 4px solid rgba(58, 132, 104, 0.28);
+  outline-offset: 2px;
+}
+
+.task-card--checked {
+  opacity: 0.52;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.task-card--checked .task-title {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.task-emoji {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #fff7eb;
+  font-size: 1.55rem;
+}
+
+.task-title {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.check-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 3px solid #cfc5bc;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.task-card--checked .check-mark {
+  border-color: #57a887;
+  background: #57a887;
+}
+
+@media (max-width: 680px) {
+  .app-shell {
+    padding: max(14px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    gap: 12px;
+  }
+
+  .app-header {
+    align-items: center;
+  }
+
+  .eyebrow {
+    display: none;
+  }
+
+  .app-header time {
+    padding: 8px 11px;
+  }
+
+  .columns {
+    grid-template-columns: repeat(2, minmax(285px, 86vw));
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .columns::-webkit-scrollbar {
+    display: none;
+  }
+
+  .task-column {
+    border-radius: 22px;
+    scroll-snap-align: start;
+  }
+
+  .task-card {
+    min-height: 70px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
