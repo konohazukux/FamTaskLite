@@ -30,6 +30,6 @@ test('移動対象から外すと元の並びへ戻る', () => {
   )
 })
 
-test('移動待ち時間は30秒', () => {
-  assert.equal(COMPLETED_MOVE_DELAY_MS, 30_000)
+test('移動待ち時間は10秒', () => {
+  assert.equal(COMPLETED_MOVE_DELAY_MS, 10_000)
 })
